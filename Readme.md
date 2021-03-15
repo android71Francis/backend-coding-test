@@ -26,6 +26,14 @@ Below will be your set of tasks to accomplish. Please work on each of these task
 
 Please deliver documentation of the server that clearly explains the goals of this project and clarifies the API response that is expected.
 
+Answer: 
+- Used node 10.0.0 and added `.nvmrc` prevent using other node version.
+- Added dependecies for documentation `npm i swagger-ui-express yamljs -S`
+- Added `docs` folder under `src` where the yaml file for documentations. 
+- Added `/api-docs` rotues for the API documentation and accessible only in development/staging.
+- Added `nodemon` for development changes reload/restart.
+- Updated some status code accordingly.
+
 #### Success Criteria
 
 1. A pull request against `master` of your fork with a clear description of the change and purpose and merge it

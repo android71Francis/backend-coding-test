@@ -1,0 +1,219 @@
+openapi: 3.0.1
+info:
+  title: Riders API
+  version: 1.0.0
+servers:
+  - description: Localhost
+    url: http://localhost:8010/
+
+tags:
+  - name: Healthcheck
+    description: Return the health of the applications
+  - name: Riders
+    description: Everything about Riders
+
+paths:
+  /health:
+    get:
+      tags:
+        - Healthcheck
+      description: return if the services is available.
+      responses:
+        200:
+          description: OK
+
+  /riders:
+    get:
+      tags:
+        - Riders
+      description: return all riders
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RidersNotFound'
+        500: 
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+    post:
+      tags: 
+        - Riders
+      description: create a new rider
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              '$ref': '#/components/schemas/Rider'
+      responses:
+        200: 
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Riders'
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+              examples:
+                INV_START_LAT_LONG:
+                  summary: INV_START_LAT_LONG
+                  value:
+                    error_code: VALIDATION_ERROR
+                    message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
+                INV_END_LAT_LONG:
+                  summary: INV_END_LAT_LONG
+                  value:
+                    error_code: VALIDATION_ERROR
+                    message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
+                INV_NAME:
+                  summary: INV_NAME
+                  value:
+                    error_code: VALIDATION_ERROR
+                    message: 'Rider name must be a non empty string'
+        500: 
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+
+  /riders/{id}:
+    get:
+      tags: 
+        - Riders
+      description: get Rider details by Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: integer
+      responses: 
+        200: 
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Riders'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RidersNotFound'
+        500: 
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerError'
+                
+components:
+  schemas: 
+    RidersNotFound:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - RIDES_NOT_FOUND_ERROR
+        message:
+          type: string
+          example: Could not find any rides
+    ServerError:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - SERVER_ERROR
+        message:
+          type: string
+          example: Unknown error
+    BadRequest:
+      type: object
+      required:
+        - error_code
+        - message
+      properties:
+        error_code:
+          type: string
+          enum:
+            - VALIDATION_ERROR
+        message:
+          type: string
+    Riders:
+      type: array
+      example: 
+        - "rideID": 1
+          "startLat": 35.929673
+          "startLong": -78.948237
+          "endLat": 36.929673
+          "endLong": -72.948237
+          "riderName": "Rider Cruz"
+          "driverName": "Driver Cruz"
+          "driverVehicle": "Honda Cruz"
+          "created": "2021-03-15 16:01:31"
+      items:
+        type: object
+        properties:
+            rideID:
+              type: integer
+            startLat: 
+              type: integer
+            startLong: 
+              type: integer
+            endLat: 
+              type: integer
+            endLong:
+              type: string
+            riderName: 
+              type: string
+            driverName: 
+              type: string
+            driverVehicle: 
+              type: string
+            created: 
+              type: string
+    Rider:
+      type: object
+      example:
+        start_lat: '35.929673'
+        start_long: '-78.948237'
+        end_lat: '36.929673'
+        end_long: '-72.948237'
+        rider_name: 'Rider Cruz'
+        driver_name: 'Driver Cruz'
+        driver_vehicle: 'Honda Cruz'
+      properties:
+        start_lat: 
+          type: string
+        start_long: 
+          type: string
+        end_lat: 
+          type: string
+        end_long:
+          type: string
+        rider_name: 
+          type: string
+        driver_name: 
+          type: string
+        driver_vehicle: 
+          type: string
