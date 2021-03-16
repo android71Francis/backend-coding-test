@@ -48,6 +48,14 @@ Please implement the following tooling:
 3. `pre-push` - for git pre push hook running tests
 4. `winston` - for logging
 
+Answer: 
+- Added dependecies for logging `npm i winston -S`.
+- Added dev dependecies for logging `npm i eslint eslint-config-airbnb-base eslint-plugin-import nyc pre-push chai sinon -SD`.
+- Added eslint standard config.
+- Added threshold for test coverage `80%`.
+- Added pre-push to run lint and test converage.
+- Fix some eslint issues.
+- Added test coverage.
 #### Success Criteria
 
 1. Create a pull request against `master` of your fork with the new tooling and merge it

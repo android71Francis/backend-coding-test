@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: Riders API
+  title: Rides API
   version: 1.0.0
 servers:
   - description: Localhost
@@ -9,8 +9,8 @@ servers:
 tags:
   - name: Healthcheck
     description: Return the health of the applications
-  - name: Riders
-    description: Everything about Riders
+  - name: Rides
+    description: Everything about Rides
 
 paths:
   /health:
@@ -22,11 +22,11 @@ paths:
         200:
           description: OK
 
-  /riders:
+  /rides:
     get:
       tags:
-        - Riders
-      description: return all riders
+        - Rides
+      description: return all rides
       responses:
         200:
           description: OK
@@ -35,7 +35,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RidersNotFound'
+                $ref: '#/components/schemas/RideNotFound'
         500: 
           description: Server error
           content:
@@ -44,21 +44,21 @@ paths:
                 $ref: '#/components/schemas/ServerError'
     post:
       tags: 
-        - Riders
-      description: create a new rider
+        - Rides
+      description: create a new ride
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              '$ref': '#/components/schemas/Rider'
+              '$ref': '#/components/schemas/Ride'
       responses:
         200: 
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Riders'
+                $ref: '#/components/schemas/Rides'
         400:
           description: Bad Request
           content:
@@ -88,11 +88,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ServerError'
 
-  /riders/{id}:
+  /rides/{id}:
     get:
       tags: 
-        - Riders
-      description: get Rider details by Id
+        - Rides
+      description: get Ride details by Id
       parameters:
         - name: id
           in: path
@@ -105,13 +105,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Riders'
+                $ref: '#/components/schemas/Rides'
         404:
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RidersNotFound'
+                $ref: '#/components/schemas/RideNotFound'
         500: 
           description: Server error
           content:
@@ -121,7 +121,7 @@ paths:
                 
 components:
   schemas: 
-    RidersNotFound:
+    RideNotFound:
       type: object
       required:
         - error_code
@@ -159,7 +159,7 @@ components:
             - VALIDATION_ERROR
         message:
           type: string
-    Riders:
+    Rides:
       type: array
       example: 
         - "rideID": 1
@@ -192,7 +192,7 @@ components:
               type: string
             created: 
               type: string
-    Rider:
+    Ride:
       type: object
       example:
         start_lat: '35.929673'
