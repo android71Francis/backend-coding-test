@@ -13,6 +13,24 @@ const jsonParser = bodyParser.json();
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 
+function getPagination(page, size) {
+  const limit = +size;
+  const offset = (page - 1) * limit;
+
+  return { limit, offset };
+}
+
+function getPagingData(data, page, size) {
+  const { totalRides } = data[0];
+  const currentPage = parseInt(page, 10) || 1;
+  const totalPages = Math.ceil(totalRides / size);
+  const rides = data.filter(obj => delete obj.totalRides);
+
+  return {
+    totalRides, rides, totalPages, currentPage,
+  };
+}
+
 module.exports = (db) => {
   app.get('/health', (req, res) => res.send('Healthy'));
 
@@ -54,7 +72,7 @@ module.exports = (db) => {
 
     db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, function (err) {
       if (err) {
-        return res.status(400).send({
+        return res.status(500).send({
           error_code: 'SERVER_ERROR',
           message: 'Unknown error',
         });
@@ -74,7 +92,10 @@ module.exports = (db) => {
   });
 
   app.get('/rides', (req, res) => {
-    db.all('SELECT * FROM Rides', (err, rows) => {
+    const { page = 1, size = 5 } = req.query;
+    const { limit, offset } = getPagination(page, size);
+
+    db.all('SELECT *, count(*) OVER() AS totalRides FROM Rides LIMIT ? OFFSET ?', [limit, offset], (err, rows) => {
       if (err) {
         return res.status(500).send({
           error_code: 'SERVER_ERROR',
@@ -89,7 +110,7 @@ module.exports = (db) => {
         });
       }
 
-      res.send(rows);
+      res.send(getPagingData(rows, page, limit));
     });
   });
 
