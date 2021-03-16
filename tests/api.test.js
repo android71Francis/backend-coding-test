@@ -9,6 +9,8 @@ const db = new sqlite3.Database(':memory:');
 const app = require('../src/app')(db);
 const buildSchemas = require('../src/schemas');
 
+const sinon = require('sinon');
+
 describe('API tests', () => {
   before((done) => {
     db.serialize((err) => {
@@ -59,6 +61,22 @@ describe('API tests', () => {
         driver_vehicle: '',
     }
 
+    it('should throw error 500 if there is something wrong with with get ride list', async () => {
+      const dbAllStub = sinon
+        .stub(db, 'all')
+        .yields(new Error('some fake error'))
+      await request(app).get('/rides').expect(500)
+      dbAllStub.restore()
+    })
+
+    it('should throw error 500 if there is something wrong with get ride by Id', async () => {
+      const dbAllStub = sinon
+        .stub(db, 'all')
+        .yields(new Error('some fake error'))
+      await request(app).get('/rides/1').expect(500)
+      dbAllStub.restore()
+    })
+
     it('should not able to add a Ride if start lat and lot no meet the condition', (done) => {
       request(app)
         .post('/rides')
@@ -108,7 +126,7 @@ describe('API tests', () => {
 
     it('should return the Riders', (done) => {
       request(app)
-        .get('/rides')
+        .get('/rides?page=1&size=5')
         .expect('Content-Type', /json/)
         .expect(200, done);
     });
@@ -119,5 +137,17 @@ describe('API tests', () => {
             .expect('Content-Type', /json/)
             .expect(200, done);
     });
+
+    it('should throw error 500 if there is something wrong with add ride', async () => {
+      const dbAllStub = sinon
+        .stub(db, 'all')
+        .yields(new Error('some fake error'))
+      await request(app)
+        .post('/rides')
+        .send(mockRide)
+        .expect(500)
+      dbAllStub.restore()
+    })
+    
   });
 });

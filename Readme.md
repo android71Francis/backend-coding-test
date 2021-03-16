@@ -73,6 +73,12 @@ Answer:
 
 Please implement pagination to retrieve pages of the resource `rides`.
 
+Answer:
+- Updated GET `/rides` to add pagination 
+- Added query paramaters to add `page` and `size`
+- Updated unit tesing.
+- Updated documentation.
+
 1. Create a pull request against `master` with your changes to the `GET /rides` endpoint to support pagination including:
     1. Code changes
     2. Tests

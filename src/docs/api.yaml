@@ -27,9 +27,24 @@ paths:
       tags:
         - Rides
       description: return all rides
+      parameters:
+      - name: page
+        in: query
+        description: Page number of the rides list. DEFAUT 1
+        schema: 
+            type: integer
+      - name: size
+        in: query
+        description: How many ride to be get in rides list. DEFAUT 5
+        schema: 
+            type: integer
       responses:
         200:
           description: OK
+          content:
+            application/json:
+                schema:
+                  $ref: '#/components/schemas/PageableRides'
         404:
           description: Not Found
           content:
@@ -97,6 +112,7 @@ paths:
         - name: id
           in: path
           required: true
+          description: Identification of the ride to be get. 
           schema: 
             type: integer
       responses: 
@@ -159,6 +175,22 @@ components:
             - VALIDATION_ERROR
         message:
           type: string
+    PageableRides: 
+      type: object
+      properties: 
+        rides:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rides' 
+        totalRides: 
+          type: integer
+          example: 10
+        totalPages: 
+          type: integer
+          example: 2
+        currentPage: 
+          type: integer
+          example: 1
     Rides:
       type: array
       example: 
