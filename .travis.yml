@@ -1,0 +1,22 @@
+language: node_js
+
+cache:
+  directories:
+    - ~/.npm
+
+node_js:
+  - '10'
+
+git:
+  depth: 3
+
+branches:
+  only:
+    - master
+
+env:
+  global:
+    - NODE_ENV=test
+
+script: npm run lint
+after_success: npm run coverage

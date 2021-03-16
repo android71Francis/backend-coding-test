@@ -7,8 +7,13 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha tests",
-    "start": "nodemon index.js"
+    "test": "mocha \"tests/**/*.test.js\"",
+    "test:watch": "mocha \"tests/**/*.test.js\" --watch",
+    "coverage": "nyc npm run test",
+    "coverage:report": "npx nyc report --reporter html --reporter text -t .nyc_output --report-dir coverage",
+    "start": "nodemon index.js",
+    "lint": "eslint ./src/ --ignore-path .gitignore",
+    "prepush": "npm run lint && npm run coverage"
   },
   "keywords": [
     "Xendit"
@@ -21,10 +26,18 @@
     "nodemon": "^2.0.7",
     "sqlite3": "^4.0.6",
     "swagger-ui-express": "^4.1.6",
+    "winston": "^3.3.3",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^12.0.1",
+    "eslint-plugin-import": "^2.2.0",
     "mocha": "^6.1.4",
+    "nyc": "^15.1.0",
+    "pre-push": "^0.1.1",
+    "sinon": "^9.2.4",
     "supertest": "^4.0.2"
   }
 }
