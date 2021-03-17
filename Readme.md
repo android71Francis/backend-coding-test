@@ -89,6 +89,14 @@ Answer:
 
 Please implement the following refactors of the code:
 
+Answer: 
+- Refactor API calls divide logic flow 
+- Refactor index.js and app for readable format
+- Added unit testing 
+- [Security] Updated issue on sql injection 
+- Updated test coverage
+- Updated `npm test` include test coverage
+
 1. Convert callback style code to use `async/await`
 2. Reduce complexity at top level control flow logic and move logic down and test independently
 3. **[BONUS]** Split between functional and imperative function and test independently
