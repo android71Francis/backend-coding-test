@@ -4,6 +4,7 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 
 const app = express();
 
@@ -12,6 +13,8 @@ const routes = require('./routes');
 module.exports = (db) => {
   app.use(bodyParser.json({ limit: '10kb' }));
   app.use(bodyParser.urlencoded({ extended: true, limit: '10kb' }));
+
+  app.use(helmet());
 
   app.use(routes(db));
 
