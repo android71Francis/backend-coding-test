@@ -129,6 +129,11 @@ Answer :
 
 Please implement load testing to ensure your service can handle a high amount of traffic
 
+Answer :  
+- Added `artillery` in dev dependecies 
+- Added `npm test:load` in npm scripts
+- Added `integration/api.yaml` for the load scripts
+- Added `rides.csv` for the load scripts data
 #### Success Criteria
 
 1. Implement load testing using `artillery`
