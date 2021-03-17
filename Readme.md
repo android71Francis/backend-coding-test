@@ -111,6 +111,11 @@ Answer:
 
 Please implement the following security controls for your system:
 
+Answer : 
+- Solved issue on GetRidesById query, id was append on the sql
+- Added Helmet for the additional security with standard security features. 
+
+
 1. Ensure the system is not vulnerable to [SQL injection](https://www.owasp.org/index.php/SQL_Injection)
 2. **[BONUS]** Implement an additional security improvement of your choice
 
